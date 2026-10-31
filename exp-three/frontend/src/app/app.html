@@ -1,0 +1,83 @@
+<div class="container">
+
+  <h1>College Course Registration</h1>
+  <p class="subtitle">Explore courses and register online</p>
+
+  <h2>Available Courses</h2>
+
+  <div class="courses">
+    <div class="course-card" *ngFor="let course of courses">
+      <h3>{{ course.courseName }}</h3>
+      <p>Code: {{ course.courseCode }}</p>
+      <p>Department: {{ course.department }}</p>
+      <p>Credits: {{ course.credits }}</p>
+    </div>
+  </div>
+
+  <h2>Student Registration</h2>
+
+  <form #registrationForm="ngForm" (ngSubmit)="registerCourse()">
+
+    <input
+      type="text"
+      name="studentName"
+      placeholder="Student Name"
+      [(ngModel)]="studentName"
+      required
+      minlength="3"
+      #nameField="ngModel">
+
+    <small class="error" *ngIf="nameField.invalid && nameField.touched">
+      Enter a valid name (at least 3 characters).
+    </small>
+
+    <input
+      type="email"
+      name="email"
+      placeholder="Email Address"
+      [(ngModel)]="email"
+      required
+      email
+      #emailField="ngModel">
+
+    <small class="error" *ngIf="emailField.invalid && emailField.touched">
+      Enter a valid email address.
+    </small>
+
+    <select
+      name="selectedCourse"
+      [(ngModel)]="selectedCourse"
+      required>
+
+      <option value="">Select Course</option>
+
+      <option *ngFor="let course of courses" [value]="course._id">
+        {{ course.courseName }}
+      </option>
+
+    </select>
+
+    <button type="submit" [disabled]="registrationForm.invalid">
+      Register Course
+    </button>
+
+  </form>
+
+  <p class="message">{{ message }}</p>
+
+  <h2>Registered Students</h2>
+
+  <div class="registration-card" *ngFor="let reg of registrations">
+
+    <h3>{{ reg.studentName }}</h3>
+    <p>{{ reg.email }}</p>
+    <p>Course: {{ reg.courseId?.courseName }}</p>
+
+    <button class="cancel"
+      (click)="cancelRegistration(reg._id)">
+      Cancel Registration
+    </button>
+
+  </div>
+
+</div>
